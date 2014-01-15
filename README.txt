@@ -1,0 +1,1 @@
+This is a Processing program that causes a video to appear glitchy, as if packets/frames are being dropped. 
