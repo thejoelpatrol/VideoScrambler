@@ -1,5 +1,12 @@
 /* This is a quick script I threw together as a proof of concept, and ended up using a handful of times. 
-  With some cleaning up, it can be a useful thing to share. For now, here's the version that exists. */
+  With some cleaning up, it can be a useful thing to share. For now, here's the version that exists, 
+  but it would be hard to use. 
+  
+  To do: 
+  decompose draw() 
+  Add parameter-setting interface
+  Add file chooser
+  */
   
 import processing.video.*;
 import processing.opengl.PGraphicsOpenGL;
@@ -11,12 +18,12 @@ int max_sample_size = 50;
 float horizontal_warp = 5;
 int frame_rate = 30;
 Movie input_movie;
-boolean saveFrames = true;
+boolean saveFrames = false;
 boolean glitch_frame;
-String filename ="insert filename here";
+String filename ="FILE0023.m4v";
 
 void setup() {
-  size(480,720);
+  size(720,480);
   input_movie = new Movie(this, filename); 
   frameRate(frame_rate);
   input_movie.loop(); 
