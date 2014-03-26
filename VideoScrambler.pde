@@ -16,77 +16,90 @@ import processing.opengl.PGraphicsOpenGL;
 int samples = 40;
 int max_sample_size = 50;
 float horizontal_warp = 5;
+float glitchProbability = 0.5;
 int frame_rate = 30;
 Movie input_movie;
 boolean saveFrames = false;
-boolean glitch_frame;
 String filename ="FILE0023.m4v";
 
 void setup() {
-  size(720,480);
-  input_movie = new Movie(this, filename); 
-  frameRate(frame_rate);
-  input_movie.loop(); 
+    size(720,480);
+    input_movie = new Movie(this, filename); 
+    frameRate(frame_rate);
+    input_movie.loop(); 
+}
+
+void draw () { 
+    input_movie.read();
+    image(input_movie,0,0);
+      
+    loadPixels();
+  
+    if (glitchFrame()) {  
+        for(int i = 1; i <= samples; i++) {
+            int selection_width = randomWidth();   
+            int selection_height = randomHeight();
+
+            //int(random(max_sample_size)) % height;
+            //selection_height = (selection_height > height ? height : selection_height);
+
+            PImage temp_image = createSample(selection_width, selection_height); 
+      
+            int new_x = int(random(width)) - width/4;
+            if (new_x < 0) 
+                new_x = 0;
+            int new_y = int(random(height)) - height/4 + 50;
+            if (new_y < 0) 
+                new_y = 0;
+     
+            image(temp_image,new_x,new_y);
+        } 
+    } 
+    
+    if (saveFrames)
+        saveFrame(filename + "-####" + ".png");  
+}  // draw()
+
+boolean glitchFrame() {
+    if (random(1) > glitchProbability)
+        return true;
+    return false;
+}
+
+int randomWidth() {
+    int selection_width = int(random(horizontal_warp*max_sample_size));
+    if (selection_width > width) 
+        selection_width = width;      
+    return selection_width;
+}
+
+int randomHeight() {
+    int selection_height = int(random(max_sample_size));
+    if (selection_height > height)
+        return height;
+    return selection_height;
+    //return (selection_height > height ? height : selection_height);
+}
+
+PImage createSample(int selection_width, int selection_height) {
+    PImage sample = new PImage(selection_width,selection_height);
+    int start_x = int(random(width-selection_width));
+    int start_y = int(random(height-selection_height));
+    int temp_image_loc = 0;
+    
+    sample.loadPixels();
+    for (int y = start_y; y < (start_y + selection_height); y++) {
+        for (int x = start_x; x < (start_x + selection_width); x++) {
+            int loc = x + y * width;
+            sample.pixels[temp_image_loc] = pixels[loc];                    
+            temp_image_loc++;
+        } 
+    }   
+    return sample;
 }
 
 
-void draw () { 
-  input_movie.read();
-  image(input_movie,0,0);
-  
-  int glitch = int(random(10));
-  if (glitch > 5)
-    glitch_frame = true;
-  else
-    glitch_frame = false;
-  
-  
-  loadPixels();
-  
-  if (glitch_frame) {  
-    for(int i = 1; i <= samples; i++) {
-      int selection_width = int(random(horizontal_warp*max_sample_size));
-      int selection_height = int(random(max_sample_size));
-      int temp_image_loc = 0;
-      
-      if (selection_height > height) 
-        selection_height = height;   
-      if (selection_width > width) 
-        selection_width = width;      
-      
-      PImage temp_image = new PImage(selection_width,selection_height);
-      int start_x = int(random(width-selection_width));
-      int start_y = int(random(height-selection_height));
-      
-      temp_image.loadPixels();
-      
-      for (int y = start_y; y < (start_y + selection_height); y++) {
-        for (int x = start_x; x < (start_x + selection_width); x++) {
-          int loc = x + y * width;
-          temp_image.pixels[temp_image_loc] = pixels[loc];                    
-          temp_image_loc++;
-        } // for x
-      } // for y   
-      int new_x = int(random(width)) - width/4;
-      if (new_x < 0) 
-        new_x = 0;
-      int new_y = int(random(height)) - height/4 + 50;
-      if (new_y < 0) 
-        new_y = 0;
-     
-      image(temp_image,new_x,new_y);
-    } // for i       
-  } // if glitch frame 
-  
-  
-  
-  if (saveFrames)
-    saveFrame(filename + "-####" + ".png");  
-
-}  // draw()
-
-
 void mousePressed() {
-  exit();
+    exit();
 }
 
