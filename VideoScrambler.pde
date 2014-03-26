@@ -23,14 +23,16 @@ boolean saveFrames = false;
 String filename ="FILE0023.m4v";
 
 void setup() {
-    size(720,480);
+    //size(640,352);
     input_movie = new Movie(this, filename); 
     frameRate(frame_rate);
-    input_movie.loop(); 
+    input_movie.loop();
+    frame.setResizable(true);
 }
 
 void draw () { 
     input_movie.read();
+    frame.setSize(input_movie.width, input_movie.height);
     image(input_movie,0,0);
       
     loadPixels();
@@ -39,26 +41,26 @@ void draw () {
         for(int i = 1; i <= samples; i++) {
             int selection_width = randomWidth();   
             int selection_height = randomHeight();
-
-            //int(random(max_sample_size)) % height;
-            //selection_height = (selection_height > height ? height : selection_height);
-
             PImage temp_image = createSample(selection_width, selection_height); 
-      
+            
+            /*
             int new_x = int(random(width)) - width/4;
             if (new_x < 0) 
                 new_x = 0;
             int new_y = int(random(height)) - height/4 + 50;
             if (new_y < 0) 
-                new_y = 0;
-     
+                new_y = 0;*/
+            
+            int new_x = int(random(width - selection_width/2));
+            int new_y = int(random(height - selection_height/2));
+
             image(temp_image,new_x,new_y);
         } 
     } 
     
     if (saveFrames)
         saveFrame(filename + "-####" + ".png");  
-}  // draw()
+} 
 
 boolean glitchFrame() {
     if (random(1) > glitchProbability)
@@ -69,7 +71,7 @@ boolean glitchFrame() {
 int randomWidth() {
     int selection_width = int(random(horizontal_warp*max_sample_size));
     if (selection_width > width) 
-        selection_width = width;      
+        return width;      
     return selection_width;
 }
 
@@ -78,7 +80,6 @@ int randomHeight() {
     if (selection_height > height)
         return height;
     return selection_height;
-    //return (selection_height > height ? height : selection_height);
 }
 
 PImage createSample(int selection_width, int selection_height) {
