@@ -22,9 +22,8 @@ float horizontalWarp = 5;
 float glitchProbability = 0.5;
 
 final int frame_rate = 30;
-
+final boolean saveFrames = false;
 Movie inputMovie;
-boolean saveFrames = false;
 String filename;
 
 JSpinner sampleNumInput;
