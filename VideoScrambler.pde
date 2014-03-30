@@ -9,22 +9,16 @@
 import processing.video.*;
 import processing.opengl.PGraphicsOpenGL;
 import java.awt.FileDialog;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
-int samples = 10;
-//int max_sample_size = 150;
 // parameters
-final int DEFAULT_SAMPLES = 40;
-final int MAX_SAMPLES = 1000;
+int samples = 40;
 int max_sample_size = 50;
 float horizontalWarp = 5;
 float glitchProbability = 0.5;
 
 final int frame_rate = 30;
-
+final boolean saveFrames = false;
 Movie inputMovie;
-boolean saveFrames = false;
 String filename;
 
 JSpinner sampleNumInput;
@@ -35,11 +29,6 @@ void setup() {
     frameRate(frame_rate);
     inputMovie.loop();
     frame.setResizable(true);
-    
-    SpinnerNumberModel sampleModel = new SpinnerNumberModel(DEFAULT_SAMPLES, 0, MAX_SAMPLES, 1);
-    sampleNumInput = new JSpinner(sampleModel);
-    add(sampleNumInput, "North");
-
 }
 
 String getFilename() {
