@@ -5,29 +5,41 @@
   To do: 
   Add parameter-setting interface
 */
-  
+
 import processing.video.*;
 import processing.opengl.PGraphicsOpenGL;
 import java.awt.FileDialog;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
-//int samples = 10;
+int samples = 10;
 //int max_sample_size = 150;
-int samples = 40;
+// parameters
+final int DEFAULT_SAMPLES = 40;
+final int MAX_SAMPLES = 1000;
 int max_sample_size = 50;
-float horizontal_warp = 5;
+float horizontalWarp = 5;
 float glitchProbability = 0.5;
 
-int frame_rate = 30;
-Movie input_movie;
+final int frame_rate = 30;
+
+Movie inputMovie;
 boolean saveFrames = false;
 String filename;
 
+JSpinner sampleNumInput;
+
 void setup() {
     filename = getFilename();
-    input_movie = new Movie(this, filename); 
+    inputMovie = new Movie(this, filename); 
     frameRate(frame_rate);
-    input_movie.loop();
+    inputMovie.loop();
     frame.setResizable(true);
+    
+    SpinnerNumberModel sampleModel = new SpinnerNumberModel(DEFAULT_SAMPLES, 0, MAX_SAMPLES, 1);
+    sampleNumInput = new JSpinner(sampleModel);
+    add(sampleNumInput, "North");
+
 }
 
 String getFilename() {
@@ -39,9 +51,9 @@ String getFilename() {
 }
 
 void draw () { 
-    input_movie.read();
-    frame.setSize(input_movie.width, input_movie.height); //annoying to have to set this every frame
-    image(input_movie,0,0);
+    inputMovie.read();
+    frame.setSize(inputMovie.width, inputMovie.height); //annoying to have to set this every frame
+    image(inputMovie,0,0);
       
     loadPixels();
   
@@ -67,7 +79,7 @@ boolean glitchFrame() {
 }
 
 int randomWidth() {
-    int selection_width = int(random(horizontal_warp*max_sample_size));
+    int selection_width = int(random(horizontalWarp*max_sample_size));
     if (selection_width > width) 
         return width;      
     return selection_width;
