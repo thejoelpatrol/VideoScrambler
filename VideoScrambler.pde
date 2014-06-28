@@ -9,6 +9,7 @@
 import processing.video.*;
 import processing.opengl.PGraphicsOpenGL;
 import java.awt.FileDialog;
+import g4p_controls.*;
 
 // parameters
 int samples = 40;
@@ -20,8 +21,6 @@ final int frame_rate = 30;
 final boolean saveFrames = false;
 Movie inputMovie;
 String filename;
-
-JSpinner sampleNumInput;
 
 void setup() {
     filename = getFilename();
