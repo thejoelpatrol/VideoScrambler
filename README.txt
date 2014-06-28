@@ -1,6 +1,6 @@
 This is a Processing program that causes a video to appear glitchy, sort as if packets/frames are being dropped, but not exactly. It's not intended for anything particularly serious, but just a cool effect for artists. 
 
-I threw it together for fun a while back, and I'm going to clean it up so it would be usable by other people, but for now it's not very presentable.
+It works fine if you want to use it in Processing, but I've now created a better version that uses Processing within a regular Java program, which allows you to use graphical controls to change the program parameters while it's running. This is basically a whole new project, and it is here: 
 
 Example output: 
 https://vimeo.com/46671485
